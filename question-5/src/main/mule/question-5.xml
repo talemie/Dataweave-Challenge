@@ -22,6 +22,6 @@ start to end
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="678b7c64-495c-4c3b-b8f0-08da32865672" message="#[vars.end]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="678b7c64-495c-4c3b-b8f0-08da32865672" message="#[payload]"/>
 	</flow>
 </mule>
