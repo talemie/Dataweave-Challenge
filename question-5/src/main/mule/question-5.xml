@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3f083927-2333-4355-928b-ee0750ce2203" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="question-5Flow" doc:id="7bb3749e-6c2d-4e15-9ad1-7de946401cd0" >
+		<http:listener doc:name="Listener" doc:id="c06907aa-1199-446a-85f5-5f4e05120f8d" config-ref="HTTP_Listener_config" path="/bb/{num}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="489c61e0-b15c-4b8e-98f5-951743ef332a" message="uri params is ----#[attributes.uriParams.num]"/>
+		<set-variable value="1" doc:name="start" doc:id="cf751fa0-3613-4889-acb6-40dc34e030f2" variableName="start"/>
+		<set-variable value="#[attributes.uriParams.num]" doc:name="end" doc:id="e615160a-b33c-4c63-9453-e741fabe1c5d" variableName="end"/>
+		<ee:transform doc:name="Transform Message" doc:id="69fe71b8-b871-473b-94c8-f12f200c03b5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var start = 1
+var end = attributes.uriParams.num
+---
+(vars.start to vars.end)[-1 to 0]
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="678b7c64-495c-4c3b-b8f0-08da32865672" message="#[vars.end]"/>
+	</flow>
+</mule>
